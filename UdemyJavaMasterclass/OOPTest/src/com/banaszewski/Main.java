@@ -38,6 +38,7 @@ public class Main {
          */
 
         double totalPrice = 0;
+        double orderPrice;
         int keyboardInput;
         boolean stayInMenu = true;
         List<String> billTypesArray = new ArrayList<>();
@@ -48,6 +49,7 @@ public class Main {
             Bread theBread = new Bread();
             Additions theAdditions = new Additions();
 
+            clearScreen();
             initialScreen();
             System.out.println("\nYour current bill is " + String.format("%.2f", totalPrice) + " $");
 
@@ -56,56 +58,67 @@ public class Main {
                 switch (inputSelect()) {
                     case 1:
                         //Classical Burger chosen:
-                        Hamburger theHamburger = new Hamburger("Classical burger", 4);
-                        String subMenuTemp;
-                        double hamburgerCost = 0;
+                        Hamburger theHamburger = new Hamburger();
+                        orderPrice = 0;
 
                         clearScreen();
 
                         //Going to the Meat selection screen:
                         System.out.println("\nSelect meat type for your " + theHamburger.getName() + ":");
                         createMenu(theMeat.getMeatTypeArray());
-                        while (stayInMenu) {
+                        do {
                             keyboardInput = inputSelect();
                             if (theHamburger.chooseMeat(keyboardInput, theMeat) == 0) {
                                 stayInMenu = true;
                             } else if (theHamburger.chooseMeat(keyboardInput, theMeat) > 0) {
-                                hamburgerCost += theHamburger.chooseMeat(keyboardInput, theMeat);
+                                orderPrice += theHamburger.chooseMeat(keyboardInput, theMeat);
                                 clearScreen();
                                 stayInMenu = false;
-                            } else break subMenu;
-                        }
+                            } else {
+                                System.out.println("\nGoing back to the main menu...");
+                                Thread.sleep(1000);
+                                break subMenu;
+                            }
+                        } while (stayInMenu);
 
                         //Going to the Bread selection screen:
-                        stayInMenu = true;
                         System.out.println("\nSelect bread type for your " + theHamburger.getName() + ":");
                         createMenu(theBread.getBreadTypeArray());
-                        while (stayInMenu) {
+                        do {
                             keyboardInput = inputSelect();
-                            if (theHamburger.chooseMeat(keyboardInput, theMeat) == 0) {
+                            if (theHamburger.chooseBread(keyboardInput, theBread) == 0) {
                                 stayInMenu = true;
                             } else if (theHamburger.chooseBread(keyboardInput, theBread) > 0) {
-                                hamburgerCost += theHamburger.chooseBread(keyboardInput, theBread);
+                                orderPrice += theHamburger.chooseBread(keyboardInput, theBread);
                                 clearScreen();
                                 stayInMenu = false;
-                            } else break subMenu;
-                        }
+                            } else {
+                                System.out.println("\nGoing back to the main menu...");
+                                Thread.sleep(1000);
+                                break subMenu;
+                            }
+                        } while (stayInMenu);
 
                         //Going to the Additions selection screen:
                         for (int i = 0; i <= theHamburger.getAdditionsNumber() - 1; i++) {
-                            stayInMenu = true;
                             System.out.println("\nSelect addition(s) for your " + theHamburger.getName() + " [" + (theHamburger.getAdditionsNumber() - i) + " more addition(s)]:");
                             createMenu(theAdditions.getAdditionsTypeArray());
-                            while (stayInMenu) {
+                            do {
                                 keyboardInput = inputSelect();
-                                if (theHamburger.chooseMeat(keyboardInput, theMeat) == 0) {
+                                double chosenHamburgerAddition = theHamburger.chooseAdditions(keyboardInput, theAdditions);
+                                if (chosenHamburgerAddition == 0) {
                                     stayInMenu = true;
-                                } else if (theHamburger.chooseAdditions(keyboardInput, theAdditions) > 0) {
-                                    hamburgerCost += theHamburger.chooseAdditions(keyboardInput, theAdditions);
+                                } else if (chosenHamburgerAddition > 0) {
+                                    orderPrice += chosenHamburgerAddition;
                                     clearScreen();
                                     stayInMenu = false;
-                                } else break subMenu;
-                            }
+                                } else {
+                                    System.out.println("\nGoing back to the main menu...");
+                                    Thread.sleep(1000);
+                                    break subMenu;
+                                }
+                            } while (stayInMenu);
+
                         }
 
                         billTypesArray.add(theHamburger.getName());
@@ -119,13 +132,89 @@ public class Main {
                             billTypesArray.add(theHamburger.getAdditionsType().get(i));
                             billPriceArray.add(theHamburger.getAdditionsCost().get(i));
                         }
-                        totalPrice += hamburgerCost;
+                        totalPrice += orderPrice;
                         break;
                     case 2:
-                        System.out.println("2 selected");
+                        //Classical Burger chosen:
+                        Healthy theHealthyBurger = new Healthy();
+                        orderPrice = 0;
+
+                        clearScreen();
+
+
+                        orderPrice += theHealthyBurger.chooseMeat(1, theMeat);
+                        System.out.println("\nBecause this order is vegetarian selection comes without any meat!");
+
+                        //Going to the Bread selection screen:
+                        orderPrice += theHealthyBurger.chooseBread(1, theBread);
+                        System.out.println("\nHealthy burger comes by default with " + theHealthyBurger.getBreadType() + "!");
+
+                        //Going to the Additions selection screen:
+                        for (int i = 0; i <= theHealthyBurger.getAdditionsNumber() - 1; i++) {
+                            System.out.println("\nSelect addition(s) for your " + theHealthyBurger.getName() + " [" + (theHealthyBurger.getAdditionsNumber() - i) + " more addition(s)]:");
+                            createMenu(theAdditions.getAdditionsTypeArray());
+                            do {
+                                keyboardInput = inputSelect();
+                                double chosenHealthyAdditions = theHealthyBurger.chooseAdditions(keyboardInput, theAdditions);
+                                if (chosenHealthyAdditions == 0) {
+                                    stayInMenu = true;
+                                } else if (chosenHealthyAdditions > 0) {
+                                    orderPrice += chosenHealthyAdditions;
+                                    clearScreen();
+                                    stayInMenu = false;
+                                } else {
+                                    System.out.println("\nGoing back to the main menu...");
+                                    Thread.sleep(1000);
+                                    break subMenu;
+                                }
+                            } while (stayInMenu);
+                        }
+
+                        billTypesArray.add(theHealthyBurger.getName());
+                        billPriceArray.add(" ");
+                        billTypesArray.add(theHealthyBurger.getMeatType());
+                        billPriceArray.add(String.valueOf(theMeat.getMeatCost()));
+                        billTypesArray.add(theHealthyBurger.getBreadType());
+                        billPriceArray.add(String.valueOf(theBread.getBreadCost()));
+
+                        for (int i = 0; i <= theHealthyBurger.getAdditionsNumber() - 1; i++) {
+                            billTypesArray.add(theHealthyBurger.getAdditionsType().get(i));
+                            billPriceArray.add(theHealthyBurger.getAdditionsCost().get(i));
+                        }
+                        totalPrice += orderPrice;
                         break;
                     case 3:
-                        System.out.println("3 selected");
+                        //Deluxe Burger chosen:
+                        Deluxe theDeluxeBurger = new Deluxe();
+                        orderPrice = 0;
+
+                        clearScreen();
+
+                        orderPrice += theDeluxeBurger.chooseMeat(1, theMeat);
+                        System.out.println("\nBecause this is a Deluxe selection, the order comes with Beef!");
+
+                        //Going to the Bread selection screen:
+                        orderPrice += theDeluxeBurger.chooseBread(1, theBread);
+                        System.out.println("\n" + theDeluxeBurger.getName() + " comes by default with " + theDeluxeBurger.getBreadType() + "!\n");
+
+                        //Going to the Additions selection screen:
+                        double chosenDeluxeAdditions = theDeluxeBurger.chooseAdditions(1, theAdditions);
+                        orderPrice += chosenDeluxeAdditions;
+
+                        clearScreen();
+
+                        billTypesArray.add(theDeluxeBurger.getName());
+                        billPriceArray.add(" ");
+                        billTypesArray.add(theDeluxeBurger.getMeatType());
+                        billPriceArray.add(String.valueOf(theMeat.getMeatCost()));
+                        billTypesArray.add(theDeluxeBurger.getBreadType());
+                        billPriceArray.add(String.valueOf(theBread.getBreadCost()));
+
+                        for (int i = 0; i <= theDeluxeBurger.getAdditionsNumber() - 1; i++) {
+                            billTypesArray.add(theDeluxeBurger.getAdditionsType().get(i));
+                            billPriceArray.add(theDeluxeBurger.getAdditionsCost().get(i));
+                        }
+                        totalPrice += orderPrice;
                         break;
                     case 4:
                         System.out.println("4 selected");
@@ -151,6 +240,7 @@ public class Main {
                         break;
                     default:
                         System.out.print("Wrong number. Select the proper one: ");
+                        break;
                 }
             }
         }
@@ -185,7 +275,7 @@ public class Main {
             System.out.println(i + ". " + array[i - 1] + ", ");
             int tmp = i + 1;
             if (tmp == (array.length + 1))
-                System.out.println(tmp + ". Go to main menu (current selection will be terminated).");
+                System.out.println(tmp + ". Go to main menu (current order will be terminated).");
         }
     }
 

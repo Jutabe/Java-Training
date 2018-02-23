@@ -2,19 +2,18 @@ package com.banaszewski;
 
 import java.util.ArrayList;
 
-import static com.banaszewski.Main.inputSelect;
-
 public class Hamburger {
     private String name;
     private int additionsNumber;
     private String meatType;
     private String breadType;
     private double hamburgerCost;
-    private ArrayList<String> additionsType = new ArrayList<>();
-    private ArrayList<String> additionsCost = new ArrayList<>();
+    protected ArrayList<String> additionsType = new ArrayList<>();
+    protected ArrayList<String> additionsCost = new ArrayList<>();
 
     public Hamburger() {
-
+        this.name = "Classical burger";
+        this.additionsNumber = 4;
     }
 
     public Hamburger(String name, int additionsNumber) {
@@ -22,23 +21,30 @@ public class Hamburger {
         this.additionsNumber = additionsNumber;
     }
 
+    public Hamburger(String name, int additionsNumber, String meatType, String breadType) {
+        this.name = name;
+        this.additionsNumber = additionsNumber;
+        this.meatType = meatType;
+        this.breadType = breadType;
+    }
+
     public String compose(int inputSelect, String[] valueArray, double[] priceArray) throws Exception {
-        if (getArrayValueByIndex(inputSelect, valueArray) != "BadInput" && (getArrayValueByIndex(inputSelect, valueArray) != "Back")) {
+
+        String arrayValueByIndex = getArrayValueByIndex(inputSelect, valueArray);
+        if((arrayValueByIndex != "BadInput") && (arrayValueByIndex != "LastMenuIndex")) {
             setHamburgerCost(getArrayPriceByIndex(inputSelect, priceArray));
-            return getArrayValueByIndex(inputSelect, valueArray);
-        } else if (getArrayValueByIndex(inputSelect, valueArray) == "Back") {
-            System.out.println("\nGoing back to the main menu...");
-            Thread.sleep(1000);
+            return arrayValueByIndex;
+        } else if (arrayValueByIndex == "LastMenuIndex") {
             return " ";
         } else {
-            System.out.println("Wrong number. Select the proper one.");
-            return "Wrong number";
+            System.out.println("Wrong number selected. Try picking a proper one.");
+            return "WrongMenuSelection";
         }
     }
 
     public double chooseMeat(int inputSelect, Meat theMeat) throws Exception {
         String chooseMeatComposition = compose(inputSelect, theMeat.getMeatTypeArray(), theMeat.getMeatPriceArray());
-        if (chooseMeatComposition == "Wrong number") {
+        if (chooseMeatComposition == "WrongMenuSelection") {
             return 0;
         } else if (chooseMeatComposition != " ") {
             setMeatType(chooseMeatComposition);
@@ -49,7 +55,7 @@ public class Hamburger {
 
     public double chooseBread(int inputSelect, Bread theBread) throws Exception {
         String chooseBreadComposition = compose(inputSelect, theBread.getBreadTypeArray(), theBread.getBreadPriceArray());
-        if (chooseBreadComposition == "Wrong number") {
+        if (chooseBreadComposition == "WrongMenuSelection") {
             return 0;
         } else if (chooseBreadComposition != " ") {
             setBreadType(chooseBreadComposition);
@@ -60,13 +66,11 @@ public class Hamburger {
 
     public double chooseAdditions(int inputSelect, Additions theAdditions) throws Exception {
         String chooseAdditionsComposition = compose(inputSelect, theAdditions.getAdditionsTypeArray(), theAdditions.getAdditionsPriceArray());
-        if (chooseAdditionsComposition == "Wrong number") {
+        if (chooseAdditionsComposition == "WrongMenuSelection") {
             return 0;
         } else if (chooseAdditionsComposition != " ") {
             additionsType.add(chooseAdditionsComposition);
-            setAdditionsType(additionsType);
             additionsCost.add(String.valueOf(getHamburgerCost()));
-            setAdditionsCost(additionsCost);
             return getHamburgerCost();
         } else return -1;
     }
@@ -76,7 +80,7 @@ public class Hamburger {
         if ((arrayIndex < (array.length + 1) && (arrayIndex > 0))) {
             return array[arrayIndex - 1];
         } else if (arrayIndex == array.length + 1) {
-            return "Back";
+            return "LastMenuIndex";
         } else return "BadInput";
     }
 

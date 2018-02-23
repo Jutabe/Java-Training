@@ -17,6 +17,10 @@ public class Meat extends Hamburger {
         return meatCost;
     }
 
+    public double getPriceFromArray(int index) {
+        return meatPriceArray[index - 1];
+    }
+
     public void setMeatCost(double meatCost) {
         this.meatCost = meatCost;
     }
