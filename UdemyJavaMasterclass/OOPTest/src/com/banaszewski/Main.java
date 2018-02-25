@@ -48,6 +48,8 @@ public class Main {
             Meat theMeat = new Meat();
             Bread theBread = new Bread();
             Additions theAdditions = new Additions();
+            Chips theChips = new Chips();
+            Drink theDrink = new Drink();
 
             clearScreen();
             initialScreen();
@@ -121,13 +123,13 @@ public class Main {
 
                         }
 
+                        //Composing full Deluxe Burger order:
                         billTypesArray.add(theHamburger.getName());
                         billPriceArray.add(" ");
                         billTypesArray.add(theHamburger.getMeatType());
                         billPriceArray.add(String.valueOf(theMeat.getMeatCost()));
                         billTypesArray.add(theHamburger.getBreadType());
                         billPriceArray.add(String.valueOf(theBread.getBreadCost()));
-
                         for (int i = 0; i <= theHamburger.getAdditionsNumber() - 1; i++) {
                             billTypesArray.add(theHamburger.getAdditionsType().get(i));
                             billPriceArray.add(theHamburger.getAdditionsCost().get(i));
@@ -140,7 +142,6 @@ public class Main {
                         orderPrice = 0;
 
                         clearScreen();
-
 
                         orderPrice += theHealthyBurger.chooseMeat(1, theMeat);
                         System.out.println("\nBecause this order is vegetarian selection comes without any meat!");
@@ -170,6 +171,7 @@ public class Main {
                             } while (stayInMenu);
                         }
 
+                        //Composing full Deluxe Burger order:
                         billTypesArray.add(theHealthyBurger.getName());
                         billPriceArray.add(" ");
                         billTypesArray.add(theHealthyBurger.getMeatType());
@@ -201,26 +203,126 @@ public class Main {
                         double chosenDeluxeAdditions = theDeluxeBurger.chooseAdditions(1, theAdditions);
                         orderPrice += chosenDeluxeAdditions;
 
+                        //Going to the Chips selection screen:
+                        System.out.println("\n" + theDeluxeBurger.getName() + " comes also with chips. Chose your preferred type of chips: ");
+                        createMenu(theChips.getChipsTypeArray());
+
+                        do {
+                            keyboardInput = inputSelect();
+                            double chosenDeluxeChips = theChips.chooseChips(keyboardInput);
+                            if (chosenDeluxeChips == 0) {
+                                stayInMenu = true;
+                            } else if (chosenDeluxeChips > 0) {
+                                orderPrice += theChips.chooseChips(keyboardInput);
+                                stayInMenu = false;
+                            } else {
+                                System.out.println("\nGoing back to the main menu...");
+                                Thread.sleep(1000);
+                                break subMenu;
+                            }
+                        } while (stayInMenu);
+
                         clearScreen();
 
+                        //Going to the Drink selection screen:
+                        System.out.println("\n" + theDeluxeBurger.getName() + " comes also with a drink. Chose your preferred type of drink: ");
+                        createMenu(theDrink.getDrinkTypeArray());
+
+                        do {
+                            keyboardInput = inputSelect();
+                            double chosenDeluxeDrink = theDrink.chooseDrink(keyboardInput);
+                            if (chosenDeluxeDrink == 0) {
+                                stayInMenu = true;
+                            } else if (chosenDeluxeDrink > 0) {
+                                orderPrice += theDrink.chooseDrink(keyboardInput);
+                                stayInMenu = false;
+                            } else {
+                                System.out.println("\nGoing back to the main menu...");
+                                Thread.sleep(1000);
+                                break subMenu;
+                            }
+                        } while (stayInMenu);
+
+                        clearScreen();
+
+                        //Composing full Deluxe Burger order:
                         billTypesArray.add(theDeluxeBurger.getName());
                         billPriceArray.add(" ");
                         billTypesArray.add(theDeluxeBurger.getMeatType());
                         billPriceArray.add(String.valueOf(theMeat.getMeatCost()));
                         billTypesArray.add(theDeluxeBurger.getBreadType());
                         billPriceArray.add(String.valueOf(theBread.getBreadCost()));
-
                         for (int i = 0; i <= theDeluxeBurger.getAdditionsNumber() - 1; i++) {
                             billTypesArray.add(theDeluxeBurger.getAdditionsType().get(i));
                             billPriceArray.add(theDeluxeBurger.getAdditionsCost().get(i));
                         }
+                        billTypesArray.add(theChips.getChipsType());
+                        billPriceArray.add(String.valueOf(theChips.getChipsCost()));
+                        billTypesArray.add(theDrink.getDrinkType());
+                        billPriceArray.add(String.valueOf(theDrink.getDrinkCost()));
                         totalPrice += orderPrice;
                         break;
                     case 4:
-                        System.out.println("4 selected");
+                        orderPrice = 0;
+
+                        clearScreen();
+
+                        //Going to the Chips selection screen:
+                        System.out.println("Chose extra chips: ");
+                        createMenu(theChips.getChipsTypeArray());
+
+                        do {
+                            keyboardInput = inputSelect();
+                            double chosenDeluxeChips = theChips.chooseChips(keyboardInput);
+                            if (chosenDeluxeChips == 0) {
+                                stayInMenu = true;
+                            } else if (chosenDeluxeChips > 0) {
+                                orderPrice += theChips.chooseChips(keyboardInput);
+                                stayInMenu = false;
+                            } else {
+                                System.out.println("\nGoing back to the main menu...");
+                                Thread.sleep(1000);
+                                break subMenu;
+                            }
+                        } while (stayInMenu);
+
+                        //Composing extra chips order:
+                        billTypesArray.add("Extra chips");
+                        billPriceArray.add(" ");
+                        billTypesArray.add(theChips.getChipsType());
+                        billPriceArray.add(String.valueOf(theChips.getChipsCost()));
+                        totalPrice += orderPrice;
                         break;
                     case 5:
-                        System.out.println("5 selected");
+                        orderPrice = 0;
+
+                        clearScreen();
+
+                        //Going to the Drink selection screen:
+                        System.out.println("Chose extra drink");
+                        createMenu(theDrink.getDrinkTypeArray());
+
+                        do {
+                            keyboardInput = inputSelect();
+                            double chosenDeluxeDrink = theDrink.chooseDrink(keyboardInput);
+                            if (chosenDeluxeDrink == 0) {
+                                stayInMenu = true;
+                            } else if (chosenDeluxeDrink > 0) {
+                                orderPrice += theDrink.chooseDrink(keyboardInput);
+                                stayInMenu = false;
+                            } else {
+                                System.out.println("\nGoing back to the main menu...");
+                                Thread.sleep(1000);
+                                break subMenu;
+                            }
+                        } while (stayInMenu);
+
+                        //Composing extra drink order:
+                        billTypesArray.add("Extra drink");
+                        billPriceArray.add(" ");
+                        billTypesArray.add(theDrink.getDrinkType());
+                        billPriceArray.add(String.valueOf(theDrink.getDrinkCost()));
+                        totalPrice += orderPrice;
                         break;
                     case 6:
                         int j = 1;

@@ -29,7 +29,6 @@ public class Hamburger {
     }
 
     public String compose(int inputSelect, String[] valueArray, double[] priceArray) throws Exception {
-
         String arrayValueByIndex = getArrayValueByIndex(inputSelect, valueArray);
         if((arrayValueByIndex != "BadInput") && (arrayValueByIndex != "LastMenuIndex")) {
             setHamburgerCost(getArrayPriceByIndex(inputSelect, priceArray));
@@ -74,7 +73,6 @@ public class Hamburger {
             return getHamburgerCost();
         } else return -1;
     }
-
 
     public String getArrayValueByIndex(int arrayIndex, String[] array) {
         if ((arrayIndex < (array.length + 1) && (arrayIndex > 0))) {
