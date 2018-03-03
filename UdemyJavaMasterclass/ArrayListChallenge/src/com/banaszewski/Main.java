@@ -21,25 +21,107 @@ public class Main {
         // Be sure not to expose the inner workings of the Arraylist to MobilePhone
         // e.g. no ints, no .get(i) etc
         // MobilePhone should do everything with Contact objects only.
+        boolean stayInMenu = true;
+        int menuOption;
 
+        while (stayInMenu) {
+            printContactMenu();
 
+            System.out.print("\nChoose option -> ");
+            menuOption = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (menuOption) {
+                case 1:
+                    printContactList();
+                    break;
+                case 2:
+                    searchContactByName();
+                    break;
+                case 3:
+                    addNewContact();
+                    break;
+                case 4:
+                    updateContact();
+                    break;
+                case 5:
+                    //removeContact();
+                    break;
+                case 6:
+                    System.out.println("Exiting contact list");
+                    stayInMenu = false;
+                    break;
+                default:
+                    System.out.println("Wrong menu option");
+                    break;
+
+            }
+        }
     }
 
     public static void printContactMenu() {
-        System.out.println("\nChoose mobile phone contact list option:");
-        System.out.println("\tPrint list of contacts.");
-        System.out.println("\tSearch / find contact.");
-        System.out.println("\tAdd new contact.");
-        System.out.println("\tUpdate existing contact.");
-        System.out.println("\tRemove contact.");
-        System.out.println("\tExit mobile phone contact list.");
+        System.out.println("\nMy mobile phone contact list menu:");
+        System.out.println("\t1. Print list of contacts.");
+        System.out.println("\t2. Search contact by name.");
+        System.out.println("\t3. Add new contact.");
+        System.out.println("\t4. Update existing contact.");
+        System.out.println("\t5. Remove contact.");
+        System.out.println("\t6. Exit mobile phone contact list.");
     }
 
-    public static String addNewContact() {
-        System.out.println("Enter contact name");
-        contactsArrayList.addNewContact(scanner.nextLine());
-
+    public static void printContactList() {
+        contactsArrayList.printContactList();
     }
 
+    public static void addNewContact() {
+        System.out.println("\nAdd new contact: ");
+        System.out.print("Enter name -> ");
+        String keyboardInput = scanner.nextLine();
+        if (contactsArrayList.addContact(keyboardInput) == 1) {
+            System.out.print("Enter phone number: ");
+            contactsArrayList.addContact(scanner.nextLine());
+            System.out.println("Contact added to list");
+        }
+    }
 
+    public static void searchContactByName() {
+        System.out.println("\nSearch contact by name: ");
+        System.out.print("Enter name -> ");
+        contactsArrayList.searchContact(scanner.nextLine());
+    }
+
+    public static void updateContact() {
+        boolean stayInMenu = true;
+        int listOption;
+        String existingItem;
+        String updatedItem;
+
+        System.out.println("Select the item to update? ");
+        System.out.println("\t1. Name.");
+        System.out.println("\t2. Phone number.");
+        System.out.println("\t3. Go back.");
+
+        while (stayInMenu) {
+            listOption = scanner.nextInt();
+            switch (listOption) {
+                case 1:
+                    printContactList();
+                    System.out.println("Enter the name of contact to update -> ");
+                    existingItem = scanner.nextLine();
+                    System.out.println("Enter new name -> ");
+                    updatedItem = scanner.nextLine();
+                    contactsArrayList.updateContactName(existingItem, updatedItem);
+                    break;
+                case 2:
+                    printContactList();
+                    System.out.println("Enter the number of contact to update -> ");
+                    break;
+                case 3:
+                    stayInMenu = false;
+                    break;
+                default:
+                    System.out.print("Wrong number. Try again -> ");
+            }
+        }
+    }
 }
