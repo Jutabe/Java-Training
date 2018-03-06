@@ -8,7 +8,7 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static Contacts contactsArrayList = new Contacts();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // Create a program that implements a simple mobile phone with the following capabilities.
         // Able to store, modify, remove and query contact names.
         // You will want to create a separate class for Contacts (name and phone number).
@@ -25,15 +25,17 @@ public class Main {
         int menuOption;
 
         while (stayInMenu) {
+            clearScreen();
             printContactMenu();
-
             System.out.print("\nChoose option -> ");
             menuOption = scanner.nextInt();
             scanner.nextLine();
+            System.out.println();
 
             switch (menuOption) {
                 case 1:
                     printContactList();
+                    waitForButton();
                     break;
                 case 2:
                     searchContactByName();
@@ -45,7 +47,7 @@ public class Main {
                     updateContact();
                     break;
                 case 5:
-                    //removeContact();
+                    removeContact();
                     break;
                 case 6:
                     System.out.println("Exiting contact list");
@@ -73,55 +75,124 @@ public class Main {
         contactsArrayList.printContactList();
     }
 
-    public static void addNewContact() {
-        System.out.println("\nAdd new contact: ");
+    public static void addNewContact() throws Exception {
+        System.out.println("Add new contact: ");
         System.out.print("Enter name -> ");
         String keyboardInput = scanner.nextLine();
         if (contactsArrayList.addContact(keyboardInput) == 1) {
             System.out.print("Enter phone number: ");
             contactsArrayList.addContact(scanner.nextLine());
-            System.out.println("Contact added to list");
+            System.out.println("Adding contact to the list");
         }
+        loaderBar();
     }
 
-    public static void searchContactByName() {
-        System.out.println("\nSearch contact by name: ");
+    public static void searchContactByName() throws Exception {
+        System.out.println("Search contact by name: ");
         System.out.print("Enter name -> ");
         contactsArrayList.searchContact(scanner.nextLine());
+        loaderBar();
     }
 
-    public static void updateContact() {
+    public static void updateContact() throws Exception {
         boolean stayInMenu = true;
         int listOption;
         String existingItem;
         String updatedItem;
 
-        System.out.println("Select the item to update? ");
-        System.out.println("\t1. Name.");
-        System.out.println("\t2. Phone number.");
-        System.out.println("\t3. Go back.");
+        submenu:
+        {
+            clearScreen();
+            System.out.println("Select the item to update? ");
+            System.out.println("\t1. Name.");
+            System.out.println("\t2. Phone number.");
+            System.out.println("\t3. Go back.");
 
-        while (stayInMenu) {
-            listOption = scanner.nextInt();
-            switch (listOption) {
-                case 1:
-                    printContactList();
-                    System.out.println("Enter the name of contact to update -> ");
-                    existingItem = scanner.nextLine();
-                    System.out.println("Enter new name -> ");
-                    updatedItem = scanner.nextLine();
-                    contactsArrayList.updateContactName(existingItem, updatedItem);
-                    break;
-                case 2:
-                    printContactList();
-                    System.out.println("Enter the number of contact to update -> ");
-                    break;
-                case 3:
-                    stayInMenu = false;
-                    break;
-                default:
-                    System.out.print("Wrong number. Try again -> ");
+            while (stayInMenu) {
+                System.out.print("\nChoose option -> ");
+                listOption = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println();
+
+                switch (listOption) {
+                    case 1:
+                        printContactList();
+                        System.out.println("Enter the name of contact to update -> ");
+                        existingItem = scanner.nextLine();
+                        System.out.println("Enter new name -> ");
+                        updatedItem = scanner.nextLine();
+                        if (contactsArrayList.updateContactName(existingItem, updatedItem) == 0) {
+                            loaderBar();
+                            break submenu;
+                        } else {
+                            System.out.println("Updating contact name \'" + existingItem + "\' to \'" + updatedItem + "\'.");
+                            loaderBar();
+                            stayInMenu = false;
+                            break;
+                        }
+                    case 2:
+                        printContactList();
+                        System.out.println("Enter the number of contact to update -> ");
+                        existingItem = scanner.nextLine();
+                        System.out.println("Enter new name -> ");
+                        updatedItem = scanner.nextLine();
+                        if (contactsArrayList.updateContactPhone(existingItem, updatedItem) == 0) {
+                            loaderBar();
+                            break submenu;
+                        } else {
+                            System.out.println("Updating contact number \'" + existingItem + "\' to \'" + updatedItem + "\'.");
+                            loaderBar();
+                            stayInMenu = false;
+                            break;
+                        }
+                    case 3:
+                        System.out.println("Going back to main menu");
+                        loaderBar();
+                        stayInMenu = false;
+                        break;
+                    default:
+                        System.out.print("Wrong number. Try again.");
+                        loaderBar();
+                        break;
+                }
             }
         }
     }
+
+    public static void removeContact() throws Exception {
+        boolean stayInMenu = true;
+
+        System.out.println("Remove contact from list: ");
+        printContactList();
+        System.out.println("Pick a number from the list to remove the contact and its number -> ");
+        while(stayInMenu) {
+            if (contactsArrayList.removeContact(scanner.nextInt()) == 1) {
+                System.out.println("Wrong number picked from the list.");
+                System.out.print("Try again -> ");
+            } else {
+                System.out.println("Removing contact from the list");
+                stayInMenu = false;
+                loaderBar();
+            }
+        }
+    }
+
+    public static void clearScreen() throws Exception, InterruptedException {
+        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+    }
+
+    public static void loaderBar() throws Exception {
+        System.out.print("[");
+        for (int i = 0; i <= 30; i++) {
+            Thread.sleep(50);
+            System.out.print("*");
+        }
+        System.out.print("]\n");
+    }
+
+    public static void waitForButton() {
+        System.out.println("\nPress any button to continue...");
+        scanner.nextLine();
+    }
+
 }
