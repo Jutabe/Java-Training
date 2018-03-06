@@ -26,7 +26,6 @@ public class Contacts {
             System.out.print(i + 1 + ". ");
             System.out.format("%-10s | %10s", contactsArrayList.get(i * 2), contactsArrayList.get(i * 2 + 1));
             System.out.println();
-            //System.out.print(i + 1 + ". " + contactsArrayList.get(i * 2) + " | " + contactsArrayList.get(i * 2 + 1) + "\n");
         }
     }
 
@@ -71,13 +70,11 @@ public class Contacts {
     }
 
     public int removeContact(int number) {
-        System.out.println("Keyboard input " + number);
         if (number < 0 | number > contactsArrayList.size()/2) {
             return 1;
         } else {
             contactsArrayList.remove((number-1)*2);
             contactsArrayList.remove((number-1)*2);
-            //contactsArrayList.remove(number*2-1);
             return 0;
         }
     }

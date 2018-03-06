@@ -1,6 +1,5 @@
 package com.banaszewski;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -75,7 +74,7 @@ public class Main {
         contactsArrayList.printContactList();
     }
 
-    public static void addNewContact() throws Exception {
+    public static void addNewContact() {
         System.out.println("Add new contact: ");
         System.out.print("Enter name -> ");
         String keyboardInput = scanner.nextLine();
@@ -84,14 +83,14 @@ public class Main {
             contactsArrayList.addContact(scanner.nextLine());
             System.out.println("Adding contact to the list");
         }
-        loaderBar();
+        waitForButton();
     }
 
-    public static void searchContactByName() throws Exception {
+    public static void searchContactByName() {
         System.out.println("Search contact by name: ");
         System.out.print("Enter name -> ");
         contactsArrayList.searchContact(scanner.nextLine());
-        loaderBar();
+        waitForButton();
     }
 
     public static void updateContact() throws Exception {
@@ -122,11 +121,11 @@ public class Main {
                         System.out.println("Enter new name -> ");
                         updatedItem = scanner.nextLine();
                         if (contactsArrayList.updateContactName(existingItem, updatedItem) == 0) {
-                            loaderBar();
+                            waitForButton();
                             break submenu;
                         } else {
                             System.out.println("Updating contact name \'" + existingItem + "\' to \'" + updatedItem + "\'.");
-                            loaderBar();
+                            waitForButton();
                             stayInMenu = false;
                             break;
                         }
@@ -134,32 +133,32 @@ public class Main {
                         printContactList();
                         System.out.println("Enter the number of contact to update -> ");
                         existingItem = scanner.nextLine();
-                        System.out.println("Enter new name -> ");
+                        System.out.println("Enter new phone number -> ");
                         updatedItem = scanner.nextLine();
                         if (contactsArrayList.updateContactPhone(existingItem, updatedItem) == 0) {
-                            loaderBar();
+                            waitForButton();
                             break submenu;
                         } else {
                             System.out.println("Updating contact number \'" + existingItem + "\' to \'" + updatedItem + "\'.");
-                            loaderBar();
+                            waitForButton();
                             stayInMenu = false;
                             break;
                         }
                     case 3:
                         System.out.println("Going back to main menu");
-                        loaderBar();
+                        waitForButton();
                         stayInMenu = false;
                         break;
                     default:
                         System.out.print("Wrong number. Try again.");
-                        loaderBar();
+                        waitForButton();
                         break;
                 }
             }
         }
     }
 
-    public static void removeContact() throws Exception {
+    public static void removeContact() {
         boolean stayInMenu = true;
 
         System.out.println("Remove contact from list: ");
@@ -172,22 +171,13 @@ public class Main {
             } else {
                 System.out.println("Removing contact from the list");
                 stayInMenu = false;
-                loaderBar();
+                waitForButton();
             }
         }
     }
 
-    public static void clearScreen() throws Exception, InterruptedException {
+    public static void clearScreen() throws Exception {
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-    }
-
-    public static void loaderBar() throws Exception {
-        System.out.print("[");
-        for (int i = 0; i <= 30; i++) {
-            Thread.sleep(50);
-            System.out.print("*");
-        }
-        System.out.print("]\n");
     }
 
     public static void waitForButton() {
