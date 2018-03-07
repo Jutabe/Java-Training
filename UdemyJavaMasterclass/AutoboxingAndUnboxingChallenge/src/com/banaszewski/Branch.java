@@ -15,10 +15,6 @@ public class Branch {
         return name;
     }
 
-    public ArrayList<Customer> getCustomers() {
-        return customers;
-    }
-
     public static Branch createBranch(String name) {
         return new Branch(name);
     }

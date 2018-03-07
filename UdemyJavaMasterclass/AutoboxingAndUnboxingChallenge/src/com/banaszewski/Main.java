@@ -49,6 +49,7 @@ public class Main {
                 case 3:
                     break;
                 case 4:
+                    bank.printBank();
                     break;
                 case 5:
                     break;
@@ -74,4 +75,16 @@ public class Main {
             System.out.println("Branch " + name + " was added.");
         }
     }
+
+    public static void addCustomerAndTrans() {
+        String name;
+        Double transaction;
+        System.out.print("Add new customer by typing his name -> ");
+        name = scanner.nextLine();
+        Customer newCustomer = Customer.createCustomer(name, transaction);
+
+    }
+
+
+
 }

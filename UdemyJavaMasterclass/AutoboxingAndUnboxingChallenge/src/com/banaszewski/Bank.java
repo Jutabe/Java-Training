@@ -7,13 +7,23 @@ public class Bank {
     private ArrayList<Branch> branches;
 
 
+
     public Bank(String name) {
         this.name = name;
         this.branches = new ArrayList<Branch>();
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Branch> getBranches() {
+        return branches;
     }
 
     public boolean addNewBranch(Branch branch) {
-        if(findBranch(branch.getName())) {
+        if (findBranch(branch.getName())) {
             System.out.println("Branch " + branch.getName() + " already exists.");
             return false;
         }
@@ -21,25 +31,43 @@ public class Bank {
         return true;
     }
 
-    public boolean addNewCustomer(Customer customer, Branch branch) {
-        if(!findBranch(branch.getName())) {
+    public boolean addNewCustomer(Branch branch, Customer customer) {
+        if (!findBranch(branch.getName())) {
             System.out.println("Branch " + branch.getName() + " does not exist.");
             return false;
-        } else if(findCustomer())
+        } else if (findCustomer(customer.getName())) {
+            System.out.println("Customer " + customer.getName() + " was already added to this branch.");
+            return false;
+        }
+        customers.add(customer);
         return true;
     }
 
     private boolean findBranch(String name) {
-        for(int i=0; i<this.branches.size(); i++) {
+        for (int i = 0; i < this.branches.size(); i++) {
             Branch loopBranch = this.branches.get(i);
-            if(loopBranch.getName().equals(name)) {
+            if (loopBranch.getName().equals(name)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean findCustomer(Customer customer) {
-        for(int i=0; i<this.cu)
+    private boolean findCustomer(String name) {
+        for (int i = 0; i < this.customers.size(); i++) {
+            Customer loopBranch = this.customers.get(i);
+            if (loopBranch.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void printBank() {
+        System.out.println("Bank name printed " + getName());
+        System.out.print("Branches printed: ");
+        for (int i = 0; i < getBranches().size(); i++) {
+            System.out.print(getBranches().get(i).getName() + ", ");
+        }
     }
 }
