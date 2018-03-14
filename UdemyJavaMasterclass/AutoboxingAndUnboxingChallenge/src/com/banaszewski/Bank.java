@@ -6,68 +6,62 @@ public class Bank {
     private String name;
     private ArrayList<Branch> branches;
 
-
-
     public Bank(String name) {
         this.name = name;
         this.branches = new ArrayList<Branch>();
-
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public ArrayList<Branch> getBranches() {
-        return branches;
-    }
-
-    public boolean addNewBranch(Branch branch) {
-        if (findBranch(branch.getName())) {
-            System.out.println("Branch " + branch.getName() + " already exists.");
-            return false;
-        }
-        branches.add(branch);
-        return true;
-    }
-
-    public boolean addNewCustomer(Branch branch, Customer customer) {
-        if (!findBranch(branch.getName())) {
-            System.out.println("Branch " + branch.getName() + " does not exist.");
-            return false;
-        } else if (findCustomer(customer.getName())) {
-            System.out.println("Customer " + customer.getName() + " was already added to this branch.");
-            return false;
-        }
-        customers.add(customer);
-        return true;
-    }
-
-    private boolean findBranch(String name) {
-        for (int i = 0; i < this.branches.size(); i++) {
-            Branch loopBranch = this.branches.get(i);
-            if (loopBranch.getName().equals(name)) {
-                return true;
-            }
+    public boolean addBranch(String branchName) {
+        if(findBranch(branchName) == null) {
+            this.branches.add(new Branch(branchName));
+            return true;
         }
         return false;
     }
 
-    private boolean findCustomer(String name) {
-        for (int i = 0; i < this.customers.size(); i++) {
-            Customer loopBranch = this.customers.get(i);
-            if (loopBranch.getName().equals(name)) {
-                return true;
-            }
+    public boolean addCustomer(String branchName, String customerName, double initialAmount) {
+        Branch branch = findBranch(branchName);
+        if(branch != null) {
+            return branch.newCustomer(customerName, initialAmount);
         }
         return false;
     }
 
-    public void printBank() {
-        System.out.println("Bank name printed " + getName());
-        System.out.print("Branches printed: ");
-        for (int i = 0; i < getBranches().size(); i++) {
-            System.out.print(getBranches().get(i).getName() + ", ");
+    public boolean addCustomerTransaction(String branchName, String customerName, double amount) {
+        Branch branch = findBranch(branchName);
+        if (branch != null) {
+            return branch.addCustomerTransaction(customerName, amount);
         }
+        return false;
+    }
+
+    private Branch findBranch(String branchName) {
+        for(int i=0; i<this.branches.size(); i++) {
+            Branch checkedBranch = this.branches.get(i);
+            if(checkedBranch.getName().equals(branchName)) {
+                return checkedBranch;
+            }
+        }
+        return null;
+    }
+
+    public boolean listCustomers(String branchName, boolean showTransactions) {
+        Branch branch = findBranch(branchName);
+        if(branch != null) {
+            System.out.println("Customers details for branch " + branch.getName());
+            ArrayList<Customer> branchCustomers = branch.getCustomers();
+            for(int i=0; i<branchCustomers.size(); i++) {
+                Customer branchCustomer = branchCustomers.get(i);
+                System.out.println("Customer: " + branchCustomer.getName() + "[" + (i+1) + "]");
+                if(showTransactions) {
+                    System.out.println("Transactions");
+                    ArrayList<Double> transactions = branchCustomer.getTransactions();
+                    for(int j=0; j<transactions.size(); j++) {
+                        System.out.println("[" + (j+1) + "] Amount " + transactions.get(j));
+                    }
+                }
+            }
+            return true;
+        } else return false;
     }
 }

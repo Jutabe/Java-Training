@@ -5,10 +5,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static Scanner scanner = new Scanner(System.in);
-    private static Bank bank = new Bank("Credit-Suisse");
-
-
     public static void main(String[] args) {
         // You job is to create a simple banking application.
         // There should be a Bank class
@@ -32,59 +28,42 @@ public class Main {
         // e.g. check if exists, or does not exist, etc.
         // Think about where you are adding the code to perform certain actions
 
-        boolean stayInMenu = true;
-        int menuOption;
+        Bank bank = new Bank("National Australia Bank");
 
-        while (stayInMenu) {
-            printMainMenu();
-            menuOption = scanner.nextInt();
-            scanner.nextLine();
-            switch (menuOption) {
-                case 1:
-                    addNewBranch();
-                    break;
-                case 2:
-                    addCustomerAndTrans();
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    bank.printBank();
-                    break;
-                case 5:
-                    break;
-            }
+        if(bank.addBranch("Adelaide")) {
+            System.out.println("Adelaide branch created");
         }
-    }
 
-    public static void printMainMenu() {
-        System.out.println("\nThis is a simple bank application: \n"
-                + "\t1. Add a new branch.\n "
-                + "\t2. Add a customer to existing branch.\n "
-                + "\t3. Add a transaction to existing customer.\n "
-                + "\t4. Show the list of customers for particular branch.\n ");
-        System.out.print("Choose menu option -> ");
-    }
+        bank.addCustomer("Adelaide", "Tim", 50.05);
+        bank.addCustomer("Adelaide", "Mike", 175.34);
+        bank.addCustomer("Adelaide", "Pearce", 220.12);
 
-    public static void addNewBranch() {
-        String name;
-        System.out.print("Add new branch by typing its name -> ");
-        name = scanner.nextLine();
-        Branch newBranch = Branch.createBranch(name);
-        if (bank.addNewBranch(newBranch)) {
-            System.out.println("Branch " + name + " was added.");
+        bank.addBranch("Sydney");
+        bank.addCustomer("Sydney", "Bob", 150.54);
+
+        bank.addCustomerTransaction("Adelaide", "Tim", 44.22);
+        bank.addCustomerTransaction("Adelaide", "Tim", 12.44);
+        bank.addCustomerTransaction("Adelaide", "Mike", 1.65);
+
+        bank.listCustomers("Adelaide", true);
+        bank.listCustomers("Sydney", true);
+
+        bank.addBranch("Melbourne");
+        if(!bank.addCustomer("Melbourne", "Brian", 5.53)) {
+            System.out.println("Error Melbourne branch does not exist");
         }
+
+        if(!bank.addBranch("Adelaide")) {
+            System.out.println("Adelaide branch already exists");
+        }
+
+        if(!bank.addCustomerTransaction("Adelaide", "Fergus", 52.33)) {
+            System.out.println("Customer does not exist at branch");
+        }
+
+        if(!bank.addCustomer("Adelaide", "Tim", 12.21)) {
+            System.out.println("Customer Tim already exists");
+        }
+
     }
-
-    public static void addCustomerAndTrans() {
-        String name;
-        Double transaction;
-        System.out.print("Add new customer by typing his name -> ");
-        name = scanner.nextLine();
-        Customer newCustomer = Customer.createCustomer(name, transaction);
-
-    }
-
-
-
 }
