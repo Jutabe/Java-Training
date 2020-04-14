@@ -2,7 +2,7 @@
 
 ## Link to Udemy exercise
 
-https://www.udemy.com/course/java-the-complete-java-developer-course/learn/quiz/4585756#announcements
+https://www.udemy.com/course/java-the-complete-java-developer-course/learn/quiz/4426604#announcements
 
 ## Exercise content
 
