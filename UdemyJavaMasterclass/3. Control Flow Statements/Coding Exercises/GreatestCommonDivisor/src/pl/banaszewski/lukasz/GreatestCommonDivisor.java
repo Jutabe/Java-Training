@@ -11,7 +11,6 @@ public class GreatestCommonDivisor {
         int greatestCommonDivisor = 0;
 
         for (int i = first / 2; i >= 1; i--) {
-            System.out.println("count " + i);
             if (first % i == 0) {
                 if (second % i == 0) {
                     greatestCommonDivisor = i;
