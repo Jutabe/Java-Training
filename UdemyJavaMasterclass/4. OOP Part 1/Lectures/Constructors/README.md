@@ -2,8 +2,9 @@
 
 ## Links to Udemy lecture and challenge
 
-Part 1: https://www.udemy.com/course/java-the-complete-java-developer-course/learn/lecture/3133106#overview
-Part 2: https://www.udemy.com/course/java-the-complete-java-developer-course/learn/lecture/3133200#overview
+Parts:
+1. https://www.udemy.com/course/java-the-complete-java-developer-course/learn/lecture/3133106#overview
+2. https://www.udemy.com/course/java-the-complete-java-developer-course/learn/lecture/3133200#overview
 
 ## Explanation
 
