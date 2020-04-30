@@ -1,7 +1,7 @@
 # Point
 ## Link to Udemy exercise
 https://www.udemy.com/course/java-the-complete-java-developer-course/learn/quiz/4590568#overview
-## Exercuse content
+## Exercise content
 You have to represent a point in 2D space. Write a class with the name Point. The class needs two fields (instance variables) with name x and y of type int.
 
 The class needs to have two constructors. The first constructor does not have any parameters (no-arg constructor). The second constructor has parameters x and y of type int and it needs to initialize the fields.
