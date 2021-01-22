@@ -12,13 +12,13 @@ public class MobilePhone {
 
     public void showMenu() {
         System.out.println("\n Select option from mobile phone menu:");
-        System.out.println("\t 0 - Show menu.");
-        System.out.println("\t 1 - Print list of contacts.");
-        System.out.println("\t 2 - Add new contact.");
-        System.out.println("\t 3 - Update existing contact.");
-        System.out.println("\t 4 - Remove contact.");
-        System.out.println("\t 5 - Search contact.");
-        System.out.println("\t 6 - Quit menu.\n");
+        System.out.println("\t 1 - Show menu.");
+        System.out.println("\t 2 - Print list of contacts.");
+        System.out.println("\t 3 - Add new contact.");
+        System.out.println("\t 4 - Update existing contact.");
+        System.out.println("\t 5 - Remove contact.");
+        System.out.println("\t 6 - Search contact.");
+        System.out.println("\t 7 - Quit menu.\n");
     }
 
     public void printContacts() {
@@ -32,8 +32,46 @@ public class MobilePhone {
         }
     }
 
-    public void addNewContact(String name, String phoneNumber) {
+    public void addNewContact(Contacts contact) {
+        boolean contactAlreadyExists = (findContact(contact.getName()) >= 0);
 
+        if(contactAlreadyExists) {
+            System.out.println("Contact already exists.");
+        } else {
+            contactsList.add(contact);
+            System.out.println("New contact was added.");
+        }
+    }
+
+    public void updateContact(String oldName, String newName, String newPhoneNumber) {
+        addNewContact(new Contacts(newName, newPhoneNumber));
+        removeContact(oldName);
+    }
+
+    public void removeContact(String name) {
+        int contactIndex = findContact(name);
+
+        if(contactIndex < 0) {
+            System.out.println("Contact does not exist.");
+        } else {
+            contactsList.remove(contactIndex);
+        }
+    }
+
+    public int findContact(String name) {
+        boolean contactExists = false;
+        int index = 0;
+        for(int i=0; i<contactsList.size(); i++) {
+            if(contactsList.get(i).getName().contains(name)) {
+                contactExists = true;
+                index = i;
+            }
+        }
+
+        if(contactExists) {
+            return index;
+        }
+
+        return -1;
     }
 }
-
