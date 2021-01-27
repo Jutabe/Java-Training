@@ -10,6 +10,14 @@ public class Main {
         lukasz.addTransaction(150.80d);
         lukasz.addTransaction(89.95d);
         branch1.showCustomers(false);
+        Customer tim = branch1.addCustomer("Tim Buchalka", 120.05d);
+        tim.addTransaction(99.99d);
+        tim.addTransaction(13.13d);
+        tim.addTransaction(255.01d);
+        branch1.showCustomers(true);
+        Customer lukasz2 = branch1.addCustomer("Lukasz Banaszewski", 1234.123d);
+
+
 
     }
 }
