@@ -17,27 +17,20 @@ public class Playlist {
     public void addSong(Song song, ArrayList<Album> albumCollection) {
         ListIterator<Album> albumListIterator = albumCollection.listIterator();
 
-        boolean songOwned = false;
-
         while(albumListIterator.hasNext()) {
             ListIterator<Song> songListIterator = albumListIterator.next().getListOfSongs().listIterator();
 
             while(songListIterator.hasNext()) {
                 Song temp = songListIterator.next();
-                System.out.println("temp = " + temp.getTitle());
                 if(temp.equals(song)) {
-                    songOwned = true;
-                    break;
+                    this.listOfSongs.add(song);
+                    System.out.println(song.getTitle() + " added to " + this.name + " playlist.");
+                    return;
                 }
             }
         }
 
-        if(songOwned) {
-            this.listOfSongs.add(song);
-            System.out.println(song.getTitle() + " added to " + this.name + " playlist.");
-        } else {
-            System.out.println("You do not own " + song.getTitle() + ".");
-        }
+        System.out.println("You do not own " + song.getTitle() + ".");
 
     }
 
